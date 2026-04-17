@@ -1,8 +1,18 @@
+import React from "react";
 
-export default function SearchArea(){
+interface SearchAreaProps {
+
+	handleKeyUp : ( e: React.KeyboardEvent<HTMLInputElement> ) => void;
+}
+
+const SearchArea: React.FC<SearchAreaProps> = ( { handleKeyUp }) => {
 
 	return <input
 		type="text"
-		/>
+		placeholder="type something"
+		onKeyUp={ handleKeyUp }
+	/>
 
 }
+
+export default SearchArea;
