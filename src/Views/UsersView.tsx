@@ -6,9 +6,11 @@ import SearchArea from '../components/SearchArea.tsx';
 import Controls from '../components/Controls.tsx';
 import CardContainer from '../components/CardContainer.tsx';
 
-function App() {
+function UsersView() {
 
 	const [ searchTerm, setSearchTerm ] = useState("");
+
+	const [ listOfUsersData, setListOfUsersData ] = useState ( [] );
 
 	/*
 			If the user types faster than 500ms the fetchUser function is not triggered 
@@ -24,14 +26,41 @@ function App() {
 
 		);
 
-		// Clean up function executed on next call
+		// Clean up function to be executed on next searchTerm update
 		return () => clearTimeout( delayBounceId );
 
 	},
 
-	[ searchTerm ]
+	[ searchTerm ] // deps array
 	
 	)
+
+	async function fetchUsers( inputValue ){
+
+		const fetchUrl = new URL( `https://api.github.com/search/users?q=${inputValue}` );
+
+		try {
+
+			const response = await fetch( fetchUrl );
+
+			if ( !response.ok ){
+
+				throw new Error( `Response.status: ${response.status}` );
+
+			}
+
+			const result = await response.json();
+
+			console.log( result );
+			setListOfUsersData( result.items );
+
+		} catch ( error ){
+
+			console.error( error ); 
+
+		}
+
+	}
 
 	const handleChange = ( e: React.ChangeEvent<HTMLInputElement> ) => {
 	
@@ -40,8 +69,7 @@ function App() {
 
 	}
 
-	return (
-		<>
+	return <>
 
 			<Header />
 
@@ -51,37 +79,12 @@ function App() {
 
 			<Controls />
 
-			<CardContainer />
+			<CardContainer
+				listOfUsersData={ listOfUsersData }				
+			/>
 
 		</>
-	)
-}
-
-
-async function fetchUsers( inputValue ){
-
-	const fetchUrl = new URL( `https://api.github.com/search/users?q=${inputValue}` );
-
-	try {
-
-		const response = await fetch( fetchUrl );
-
-		if ( !response.ok ){
-
-			throw new Error( `Response.status: ${response.status}` );
-
-		}
-
-		const result = await response.json();
-
-		console.log( result );
-
-	} catch ( error ){
-
-		console.error( error ); 
-
-	}
 
 }
 
-export default App
+export default UsersView
