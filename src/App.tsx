@@ -1,62 +1,20 @@
 import './App.css'
 
-import React from 'react';
-
-import Header from './components/Header.tsx';
-import SearchArea from './components/SearchArea.tsx';
-import Controls from './components/Controls.tsx';
-import CardContainer from './components/CardContainer.tsx';
+import UsersView from './Views/UsersView.tsx';
 
 function App() {
 
 	return (
 		<>
 
-			<Header />
-
-			<SearchArea
-				handleKeyUp={ handleKeyUp } 
-				/>
-
-			<Controls />
-
-			<CardContainer />
+			{/* 
+					Wrapping users view in a single component 
+					makes it reusable in a more complex project
+			*/}	
+			<UsersView />
 
 		</>
 	)
 }
 
-const handleKeyUp = ( e: React.KeyboardEvent<HTMLInputElement> ) => {
- 
-	console.info( e.currentTarget.value )
-
-}
-
-
-async function fetchUsers( inputValue ){
-
-	const fetchUrl = new URL( `https://api.github.com/search/users?q=${inputValue}` );
-
-	try {
-
-		const response = await fetch( fetchUrl );
-
-		if ( !response.ok ){
-
-			throw new Error( `Response.status: ${response.status}` );
-
-		}
-
-		const result = await response.json();
-
-		console.log( result );
-
-	} catch ( error ){
-
-		console.error( error ); 
-
-	}
-
-}
-
-export default App
+export default App;
