@@ -10,18 +10,22 @@ function App() {
 
 	const [ searchTerm, setSearchTerm ] = useState("");
 
+	/*
+			If the user types faster than 500ms the fetchUser function is not triggered 
+	*/
 	useEffect( () => {
 
 		//Set a timer to delay the API call
-		const delayBounceFn = setTimeout( 
+		const delayBounceId = setTimeout( 
 			
 			() => { if ( searchTerm ){ fetchUsers( searchTerm ); }},
 
-			500
+			500 
 
 		);
 
-		return () => clearTimeout( delayBounceFn );
+		// Clean up function executed on next call
+		return () => clearTimeout( delayBounceId );
 
 	},
 
