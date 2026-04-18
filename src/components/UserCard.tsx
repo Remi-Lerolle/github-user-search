@@ -1,4 +1,4 @@
-import type { UserDataType } from "../dataTypes/userDataType";
+import type { UserDataType } from "../Types/userDataType";
 
 interface CardProps {
 

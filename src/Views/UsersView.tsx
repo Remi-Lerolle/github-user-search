@@ -5,12 +5,14 @@ import Header from '../components/Header.tsx';
 import SearchArea from '../components/SearchArea.tsx';
 import Controls from '../components/Controls.tsx';
 import CardContainer from '../components/CardContainer.tsx';
+import type { UserDataType } from '../Types/userDataType.tsx';
+import type { fetchUsersProps } from '../Types/fetchUserProps.tsx';
 
 function UsersView() {
 
 	const [ searchTerm, setSearchTerm ] = useState("");
 
-	const [ listOfUsersData, setListOfUsersData ] = useState ( [] );
+	const [ listOfUsersData, setListOfUsersData ] = useState< UserDataType[] | null > ( null );
 
 	/*
 			If the user types faster than 500ms the fetchUser function is not triggered 
@@ -20,7 +22,7 @@ function UsersView() {
 		//Set a timer to delay the API call
 		const delayBounceId = setTimeout( 
 			
-			() => { if ( searchTerm ){ fetchUsers( searchTerm ); }},
+			() => { if ( typeof searchTerm === "string" ){ fetchUsers( { inputValue : searchTerm, pageNumber: undefined} ); }},
 
 			500 
 
@@ -35,9 +37,9 @@ function UsersView() {
 	
 	)
 
-	async function fetchUsers( inputValue ){
+	async function fetchUsers( { inputValue, pageNumber}: fetchUsersProps ){
 
-		const fetchUrl = new URL( `https://api.github.com/search/users?q=${inputValue}` );
+		const fetchUrl = new URL( `https://api.github.com/search/users?q=${inputValue}${ pageNumber ? `&page=${pageNumber}` : "" }` );
 
 		try {
 
