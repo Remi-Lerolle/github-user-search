@@ -39,6 +39,8 @@ function UsersView() {
 
 	async function fetchUsers( { inputValue, pageNumber}: fetchUsersProps ){
 
+		if ( !inputValue ){ return; }
+
 		const fetchUrl = new URL( `https://api.github.com/search/users?q=${inputValue}${ pageNumber ? `&page=${pageNumber}` : "" }` );
 
 		try {
@@ -54,6 +56,17 @@ function UsersView() {
 			const result = await response.json();
 
 			console.log( result );
+
+			if ( response.headers.get( "link" ) ){
+
+				/*
+						TO DO:
+						Implement pagination
+				*/
+				console.log( response.headers.get( "link" ) );
+
+			}
+
 			setListOfUsersData( result.items );
 
 		} catch ( error ){
