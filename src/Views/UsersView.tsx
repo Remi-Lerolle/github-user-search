@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Header from '../components/Header.tsx';
 import SearchArea from '../components/SearchArea.tsx';
@@ -8,13 +8,41 @@ import CardContainer from '../components/CardContainer.tsx';
 
 function App() {
 
+	const [ searchTerm, setSearchTerm ] = useState("");
+
+	useEffect( () => {
+
+		//Set a timer to delay the API call
+		const delayBounceFn = setTimeout( 
+			
+			() => { if ( searchTerm ){ fetchUsers( searchTerm ); }},
+
+			500
+
+		);
+
+		return () => clearTimeout( delayBounceFn );
+
+	},
+
+	[ searchTerm ]
+	
+	)
+
+	const handleChange = ( e: React.ChangeEvent<HTMLInputElement> ) => {
+	
+		console.info( e.target.value );
+		setSearchTerm( e.currentTarget.value );
+
+	}
+
 	return (
 		<>
 
 			<Header />
 
 			<SearchArea
-				handleKeyUp={ handleKeyUp } 
+				handleChange={ handleChange } 
 				/>
 
 			<Controls />
@@ -23,12 +51,6 @@ function App() {
 
 		</>
 	)
-}
-
-const handleKeyUp = ( e: React.KeyboardEvent<HTMLInputElement> ) => {
- 
-	console.info( e.currentTarget.value )
-
 }
 
 

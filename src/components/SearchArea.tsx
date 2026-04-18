@@ -2,15 +2,15 @@ import React from "react";
 
 interface SearchAreaProps {
 
-	handleKeyUp : ( e: React.KeyboardEvent<HTMLInputElement> ) => void;
+	handleChange : ( e: React.ChangeEvent<HTMLInputElement> ) => void;
 }
 
-const SearchArea: React.FC<SearchAreaProps> = ( { handleKeyUp }) => {
+const SearchArea: React.FC<SearchAreaProps> = ( { handleChange }) => {
 
 	return <input
 		type="text"
 		placeholder="type something"
-		onKeyUp={ handleKeyUp }
+		onChange={ handleChange }
 	/>
 
 }
