@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 import Header from '../components/Header.tsx';
 import SearchArea from '../components/SearchArea.tsx';
@@ -15,14 +15,25 @@ function UsersView() {
 
 	const [ searchTerm, setSearchTerm ] = useState< String > ( "" );
 
-	const [ rateLimit, setRateLimit ] = useState< RateLimit | null > ( null );
+	/* 
+			If a rateLimitReset has been saved in the browser,
+			uses it
+			otherwise it will be set at API response
+ 	*/
+	const rateLimitRef = useRef< RateLimit | null > (
+		 localStorage.getItem( "rateLimitReset" )
+			? new RateLimit( 
+					0, 
+					0, 
+					Number( localStorage.getItem( "rateLimitReset" ) ),
+					null
+				)
+			: null
+		)
 
 	const [ listOfUsersData, setListOfUsersData ] = useState< UserDataType[] | null > ( null );
 
-
-	/*
-			If the user types faster than 500ms the fetchUser function is not triggered
-	*/
+	/* If the user types faster than 500ms the fetchUser function is not triggered */
 	useEffect( () => {
 
 		//Set a timer to delay the API call
@@ -43,25 +54,13 @@ function UsersView() {
 	
 	)
 
-	async function fetchUsers( { inputValue, pageNumber}: fetchUsersProps ){
+	async function fetchUsers( { inputValue, pageNumber }: fetchUsersProps ){
 
 		/* Don't search for empty input value */
 		if ( !inputValue ){ return; }
-
-		/* Don't search if rate limit is reached */
-		if ( rateLimit && rateLimit.remaining === 0 && Date.now() <= rateLimit.reset ){
-
-			/* 
-
-				TO DO:
-
-				Display message to say rate limit is reached
-
-			*/	
-
-			return;
 		
-		}
+		/* Don't call API if rate limit is reached */
+		if ( limitIsReached() ){ return; }
 
 		const fetchUrl = new URL( `https://api.github.com/search/users?q=${inputValue}${ pageNumber ? `&page=${pageNumber}` : "" }` );
 
@@ -72,7 +71,7 @@ function UsersView() {
 			if ( !response.ok ){
 
 				throw new Error( `Response.status: ${response.status}` );
-
+	
 			}
 
 			const result = await response.json();
@@ -91,42 +90,51 @@ function UsersView() {
 
 	}
 
-
 	const handleApiHeaders = ( headers: Headers ): void =>{
 
-		setRateLimit( new RateLimit(
+		/* 
+			Save x-rate-limit in local storage.
+			Because if the user reach the limit and reloads the page,
+			the browser lose it
+		*/
+		localStorage.setItem( "rateLimitReset",  headers.get( "x-ratelimit-reset" ) );
 
-			Number ( headers.get( "x-rate-limit" ) ),
+		/* Updates the rate limit ref */ 
+		rateLimitRef.current = new RateLimit(
 
-			Number ( headers.get( "x-ratelimit-remaining" ) ),
+				Number ( headers.get( "x-rate-limit" ) ),
 
-			Number ( headers.get( "x-ratelimit-reset" ) ),
+				Number ( headers.get( "x-ratelimit-remaining" ) ),
 
-			Number ( headers.get( "x-ratelimit-used" ) )
+				Number ( headers.get( "x-ratelimit-reset" ) ),
 
-	));
+				Number ( headers.get( "x-ratelimit-used" ) )
 
-	console.log ( "rateLimitObj", rateLimit );
+		);
 
-	/*
-			TO DO:
-			Implement pagination
-	
-			const link = headers.get( "link" );
-	
-	*/
+	}
+
+	const limitIsReached = () => {
+
+		/* API has not yet been requested */
+		if ( !rateLimitRef.current ){
+			
+			return false; 
+
+		}
+
+		return rateLimitRef.current.remaining === 0 && ( Date.now() / 1000 ) < rateLimitRef.current.reset;
 
 	}
 
 	const handleChange = ( e: React.ChangeEvent<HTMLInputElement> ):void => {
 	
-		console.info( e.target.value );
 		setSearchTerm( e.currentTarget.value );
 
 	}
 
 	return <>
-
+		
 			<Header />
 
 			<SearchArea
@@ -137,6 +145,8 @@ function UsersView() {
 
 			<CardContainer
 				listOfUsersData={ listOfUsersData }				
+				rateLimitReset={ rateLimitRef.current?.reset || null }
+				rateLimitReached={ limitIsReached() || false }
 			/>
 
 		</>
