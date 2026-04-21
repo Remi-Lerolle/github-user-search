@@ -235,14 +235,25 @@ function UsersView() {
 		setListOfUsersData( listOfUsersData
 			.reduce(
 
-					( acc, userData, currIndex ) => { 
+					( acc, userData ) => { 
 					
 						if( listOfSelectedUsers.includes( userData.id ) ){
 
-							acc
-								.splice( currIndex, 0, { ...userData, id: Math.random()  } );
+							const currentInAcc = acc.find( userInAcc => userInAcc.id === userData.id  );
 
-							/* self.crypto.randomUUID() would be a good choice for alpha numeric ids*/
+							/* indexOfCurrentInAcc allows to have the the clone aside of genuine */
+							const indexOfCurrentInAcc = acc.indexOf( currentInAcc );
+
+														/* Define a new id for the cloned user to avoid conflict on latter selection */
+							/* TO DO: check the new id is not alreay assigned  */
+							/* self.crypto.randomUUID() would be a better choice for alpha numeric ids */
+							acc
+								.splice( 
+									indexOfCurrentInAcc + 1,
+									0, 
+									{ ...userData, id: Math.floor(Math.random() * 100000)  } 
+								);
+
 
 							return acc;
 

@@ -180,7 +180,7 @@ button{
 
 	width: 100px;
 
-	height: 140px;
+	height: 155px;
 
 	margin-right: 1rem;
 
@@ -221,5 +221,17 @@ button{
 .user-card button{
 
 	background-color: var( --color-full__blue ); 
+
+}
+
+.user-card__profile-id{
+
+	margin-bottom: 0px;
+
+}
+
+.user-card__profile-login{
+
+	margin-top: 0px;
 
 }

@@ -28,7 +28,16 @@ export default function UserCard( { userData, handleSelectUser, checked }: CardP
 				src={ userData.avatar_url.toString() }
 			/>
 
-			<p>
+			<p
+				className="user-card__profile-id"
+			>
+
+				{ userData.id }
+
+			</p>
+
+			<p
+				className="user-card__profile-login">
 
 				{ userData.login }
 
