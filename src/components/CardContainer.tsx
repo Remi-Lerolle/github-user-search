@@ -10,11 +10,13 @@ interface CardContainerProps {
 
 	rateLimitReached: boolean;
 
-	handleSelectUser: ( e: React.MouseEvent<HTMLInputElement>, userId: number ) => void;
+	handleSelectUser: ( e: React.ChangeEvent<HTMLInputElement>, userId: number ) => void;
+
+	listOfSelectedUsers: number[];
 
 }
 
-export default function CardContainer( { listOfUsersData, rateLimitReset, rateLimitReached, handleSelectUser }: CardContainerProps ){
+export default function CardContainer( { listOfUsersData, rateLimitReset, rateLimitReached, handleSelectUser, listOfSelectedUsers }: CardContainerProps ){
 
 	return <div className="card-container">
 
@@ -37,6 +39,7 @@ export default function CardContainer( { listOfUsersData, rateLimitReset, rateLi
 							userData={ userData }
 							key={ `user-card-${ userCardindex }` }
 							handleSelectUser={ handleSelectUser }
+							checked={ listOfSelectedUsers.includes( userData.id ) }
 						/> )
 					)
 				: null

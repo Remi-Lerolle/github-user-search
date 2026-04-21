@@ -1,17 +1,19 @@
 import Trash from "../assets/trash.svg"
 import Copy from "../assets/copy.svg"
 import Check from "../assets/check.svg"
-import CheckDouble from "../assets/check-double.svg"
+import Bar from "../assets/bar.svg"
 
 interface ControlsProps{
 
 	countSelected: number;
 
-	handleSelectUser: ( e: React.MouseEvent<HTMLInputElement> ) => void;
+	countUsers: number;
+
+	handleSelecAlltUsers: () => void;
 	
 }
 
-export default function Controls( { countSelected, handleSelectUser }: ControlsProps ){
+export default function Controls( { countSelected, countUsers, handleSelecAlltUsers }: ControlsProps ){
 
 	return <div
 		className="controls">
@@ -21,8 +23,26 @@ export default function Controls( { countSelected, handleSelectUser }: ControlsP
 			
 				<div
 					className="controls__select-all__box"
-					onClick={ handleSelectUser }
+					onClick={ handleSelecAlltUsers }
 				>
+
+					{
+
+						countSelected && countSelected < countUsers
+							? <img
+									src={ Bar }
+								/>
+							: null
+					}
+
+					{
+
+						( countSelected > 0 ) && ( countSelected === countUsers )
+							? <img
+									src={ Check }
+								/>
+							: null
+					}
 
 				</div>
 

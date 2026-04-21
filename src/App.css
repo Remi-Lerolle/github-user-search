@@ -82,14 +82,9 @@
 
 }
 
-.controls__actions img:hover{
-
-	width: 50px;
-
-}
-
-
 .controls__select-all__box{
+
+	position: relative;
 
 	height: 0.75rem;
 
@@ -98,6 +93,16 @@
 	border: 0.2rem solid black;
 
 	border-radius: 0.2rem;
+
+}
+
+.controls__select-all__box img {
+
+	position: absolute;
+
+	top: 0px;
+
+	left: 0px;
 
 }
 
@@ -182,6 +187,8 @@ button{
 	padding: 1rem;
 
 	border-radius: 0.5rem;
+
+	font-size: 0.75rem;
 
 }
 

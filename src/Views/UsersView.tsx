@@ -33,7 +33,7 @@ function UsersView() {
 
 	const [ listOfUsersData, setListOfUsersData ] = useState< UserDataType[] | null > ( null );
 
-	const [ listOfSelectedUser, setListOfSelectedUser ] = useState< number[] > ([]);
+	const [ listOfSelectedUsers, setListOfSelectedUser ] = useState< number[] > ([]);
 
 	/* If the user types faster than 500ms the fetchUser function is not triggered */
 	useEffect( () => {
@@ -135,17 +135,43 @@ function UsersView() {
 
 	}
 
-	/* This state handler is prop drilled redux could help */
-	const handleSelectUser = ( e: React.MouseEvent<HTMLInputElement>, userId: number ): void => {
+	const handleSelectUser = ( e: React.ChangeEvent<HTMLInputElement>, userId: number ): void => {
 
-		console.log( e.currentTarget.checked );
-		console.log( userId );
+		const newListOfSelectedUser = [ ...listOfSelectedUsers ];
 
-		const newListOfSelectedUser = structuredClone( listOfSelectedUser );
+		if ( e.currentTarget.checked && !newListOfSelectedUser.includes( userId ) ){
 
-		if ( e.currentTarget.checked ){
+			newListOfSelectedUser.push( userId );
+
+		} else {
+
+			const userIndex = newListOfSelectedUser.indexOf( userId );
+
+			if ( userIndex > -1 ){
+
+				newListOfSelectedUser.splice( userIndex, 1 );
+
+			}
+
+		}
+
+		setListOfSelectedUser( newListOfSelectedUser ); 
+
+	}
+
+	const handleSelecAlltUsers = (): void => {
+
+		if ( listOfUsersData && !listOfSelectedUsers.length ) {
+
+				const newListOfSelectedUser = listOfUsersData
+					.map( user => user.id );
+
+			setListOfSelectedUser( newListOfSelectedUser ); 
 
 
+		} else {
+
+			setListOfSelectedUser( [] );
 
 		}
 
@@ -160,7 +186,9 @@ function UsersView() {
 				/>
 
 			<Controls 
-				countSelected={ listOfSelectedUser.length }
+				countSelected={ listOfSelectedUsers.length }
+				countUsers={ listOfUsersData?.length || 0 }
+				handleSelecAlltUsers={ handleSelecAlltUsers }
 			/>
 
 			<CardContainer
@@ -168,7 +196,7 @@ function UsersView() {
 				rateLimitReset={ rateLimitRef.current?.reset || null }
 				rateLimitReached={ limitIsReached() || false }
 				handleSelectUser={ handleSelectUser }
-
+				listOfSelectedUsers={ listOfSelectedUsers }
 			/>
 
 		</>

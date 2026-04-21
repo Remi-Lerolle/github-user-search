@@ -4,11 +4,13 @@ interface CardProps {
 
 	userData: UserDataType;
 
-	handleSelectUser: ( e: React.MouseEvent<HTMLInputElement>, userId: number ) => void;
+	handleSelectUser: ( e: React.ChangeEvent<HTMLInputElement>, userId: number ) => void;
+
+	checked: boolean;
 
 }
 
-export default function UserCard( { userData, handleSelectUser }: CardProps ){
+export default function UserCard( { userData, handleSelectUser, checked }: CardProps ){
 
 	return (
 		<div className="user-card">
@@ -16,7 +18,8 @@ export default function UserCard( { userData, handleSelectUser }: CardProps ){
 			<input
 				type="checkbox"
 				className="user-card__check"
-				onClick={ (e) => handleSelectUser( e, userData.id ) }
+				onChange={ (e) => handleSelectUser( e, userData.id ) }
+				checked={ checked }
 			/>
 
 			<img 
@@ -31,11 +34,16 @@ export default function UserCard( { userData, handleSelectUser }: CardProps ){
 
 			</p>
 
-			<button>
+			<a
+				href={ userData.html_url.toString() }
+				target="_blank"
+				>
+				<button>
 
-				Voir le profile
+					Voir le profile
 
 			</button>
+			</a>	
 
 		</div>
 	)
