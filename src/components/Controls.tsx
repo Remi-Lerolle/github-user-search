@@ -51,7 +51,8 @@ export default function Controls( { countSelected, countUsers, handleSelecAlltUs
 				</div>
 
 				<p
-					className="controls__select-all__count" >
+					className="controls__select-all__count"
+				>
 
 					<span>{ countSelected }</span><span>{ ` selected element${ countSelected > 0 ? "s" : "" }` }</span> {/* text could be "selected user(s) instead*/}
 

@@ -49,7 +49,7 @@ export default function UserCard( { userData, handleSelectUser, checked }: CardP
 				>
 				<button>
 
-					Voir le profile
+					View profile
 
 			</button>
 			</a>	

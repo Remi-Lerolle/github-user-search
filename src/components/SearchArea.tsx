@@ -5,7 +5,7 @@ interface SearchAreaProps {
 	handleChange : ( e: React.ChangeEvent<HTMLInputElement> ) => void;
 }
 
-const SearchArea: React.FC<SearchAreaProps> = ( { handleChange }) => {
+const SearchArea: React.FC<SearchAreaProps> = ( { handleChange } ) => {
 
 	return <div
 		className="search-area"

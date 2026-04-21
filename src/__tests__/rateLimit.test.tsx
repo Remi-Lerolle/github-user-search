@@ -1,7 +1,5 @@
 import { describe, test, expect } from "vitest"
 
-import CardContainer from "../components/CardContainer"
-
 describe (
 
 	"Test message is displayed if rateLimit is reached",
