@@ -1,56 +1,26 @@
-import { useEffect } from "react";
-
 interface MessageProps {
 
-	message: string;
-
-	id: string;
+	children: React.ReactNode;
 
 }
 
-export default function Message( { message, id }: MessageProps ){
+export default function Message( { children }: MessageProps ){
 
 	const closeDialog = () => {
 
 		document
-			.querySelector( `dialog` )
+			.querySelector( "dialog" )
 			.close()
 
 	}
 
-	const showDialog = () => {
-
-		document
-			.querySelector( "dialog" )
-			.showModal()
-
-	}
-	
-	/* Always display the dialog as a modal (with backdrop) */
-	useEffect( 
-	
-		() => {
-
-			showDialog();
-
-		},
-
-		[], // deps array
-
-	)
-
 	return <>
 
 		<dialog 
-			id={ `message-dialog-${ id }` }
+			open
 		>
-
-			<p>
 				
-				{ message }
-
-			</p>
-
+				{ children }
 
 			<div 
 				className="dialog__buttons"

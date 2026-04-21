@@ -20,17 +20,6 @@ export default function CardContainer( { listOfUsersData, rateLimitReset, rateLi
 
 	return <div className="card-container">
 
-		{
-
-			rateLimitReached
-				? <Message 
-						message={`Limite d'appels API atteinte ! Attendre ${ rateLimitReset - Math.round( Date.now() / 1000 ) } secondes.`} 
-						id="api-limit-reached"
-					/>
-				:	null
-
-		}
-
 		{ 
 	
 			listOfUsersData && listOfUsersData.length
@@ -50,11 +39,20 @@ export default function CardContainer( { listOfUsersData, rateLimitReset, rateLi
 		{ 
 	
 			listOfUsersData && listOfUsersData.length === 0
-				? <Message 
-						message={`Aucun résultat.`}
-						id="no-result"
-					/>
+				? <Message>
+						<p>Aucun résultat.</p>
+					</Message>
 				: null
+
+		}
+
+		{
+
+			rateLimitReached
+				? <Message>
+						<p>{`Limite d'appels API atteinte ! Attendre ${ rateLimitReset - Math.round( Date.now() / 1000 ) } secondes.`}</p>
+					</Message>
+				:	null
 
 		}
 

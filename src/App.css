@@ -120,6 +120,8 @@ dialog{
 
 	border-radius: 0.5rem;
 
+	background-color: salmon;
+
 }
 
 dialog::backdrop{
@@ -189,6 +191,8 @@ button{
 	border-radius: 0.5rem;
 
 	font-size: 0.75rem;
+
+	box-shadow: 10px 5px 5px var( --color-full__grey );
 
 }
 
