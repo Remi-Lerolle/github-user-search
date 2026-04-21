@@ -33,6 +33,8 @@ function UsersView() {
 
 	const [ listOfUsersData, setListOfUsersData ] = useState< UserDataType[] | null > ( null );
 
+	const [ listOfSelectedUser, setListOfSelectedUser ] = useState< number[] > ([]);
+
 	/* If the user types faster than 500ms the fetchUser function is not triggered */
 	useEffect( () => {
 
@@ -133,6 +135,22 @@ function UsersView() {
 
 	}
 
+	/* This state handler is prop drilled redux could help */
+	const handleSelectUser = ( e: React.MouseEvent<HTMLInputElement>, userId: number ): void => {
+
+		console.log( e.currentTarget.checked );
+		console.log( userId );
+
+		const newListOfSelectedUser = structuredClone( listOfSelectedUser );
+
+		if ( e.currentTarget.checked ){
+
+
+
+		}
+
+	}
+
 	return <>
 		
 			<Header />
@@ -141,12 +159,16 @@ function UsersView() {
 				handleChange={ handleChange } 
 				/>
 
-			<Controls />
+			<Controls 
+				countSelected={ listOfSelectedUser.length }
+			/>
 
 			<CardContainer
 				listOfUsersData={ listOfUsersData }				
 				rateLimitReset={ rateLimitRef.current?.reset || null }
 				rateLimitReached={ limitIsReached() || false }
+				handleSelectUser={ handleSelectUser }
+
 			/>
 
 		</>

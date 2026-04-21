@@ -4,12 +4,20 @@ interface CardProps {
 
 	userData: UserDataType;
 
+	handleSelectUser: ( e: React.MouseEvent<HTMLInputElement>, userId: number ) => void;
+
 }
 
-export default function UserCard( { userData }: CardProps ){
+export default function UserCard( { userData, handleSelectUser }: CardProps ){
 
 	return (
 		<div className="user-card">
+
+			<input
+				type="checkbox"
+				className="user-card__check"
+				onClick={ (e) => handleSelectUser( e, userData.id ) }
+			/>
 
 			<img 
 				alt="user avatar"

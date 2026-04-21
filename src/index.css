@@ -1,7 +1,7 @@
 :root {
-	--text: #6b6375;
+	--text: #black;
 	--color-full__grey: #d5d5d5;
-	font: 18px/145% var(--sans);
+	--color-full__grey-2: #929292;
 	letter-spacing: 0.18px;
 	color: var(--text);
 	background: var(--bg);
@@ -18,7 +18,7 @@
 
 
 #root {
-	width: 1126px;
+	width: 100%;
 	max-width: 100%;
 	margin: 0 auto;
 	text-align: center;

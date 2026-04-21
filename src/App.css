@@ -1,3 +1,112 @@
+.header{
+
+	display: flex;
+
+  align-items: center;
+
+  text-align: center;
+
+  justify-content: center;
+
+	height: 64px;
+
+	background-color: var( --color-full__grey-2 );
+
+}
+
+.search-area{
+
+	margin-top: 1rem;
+
+}
+
+.search-area__input{
+
+	border-radius: 0.5rem;
+
+	border: 0;
+
+	background-color: var( --color-full__grey );
+
+	padding: 0.5rem 1rem;
+
+}
+
+.controls{
+
+	display: flex;
+
+	justify-content: space-between;
+
+	margin-top: 1rem;
+
+	padding: 0.5rem 2rem;	
+
+}
+
+.controls__select-all,
+.controls__actions{
+
+	width: 300px;
+
+}
+
+.controls__select-all{
+
+	display: flex;
+
+	justify-content: start;
+
+}
+
+.controls__actions{
+
+	display: flex;
+
+	justify-content: end;
+
+}
+
+.controls__select-all__box{
+
+	cursor: pointer;
+
+}
+
+
+.controls__actions img{
+
+	width: 40px;
+
+	cursor: pointer;
+
+}
+
+.controls__actions img:hover{
+
+	width: 50px;
+
+}
+
+
+.controls__select-all__box{
+
+	height: 0.75rem;
+
+	width: 0.75rem;
+
+	border: 0.2rem solid black;
+
+	border-radius: 0.2rem;
+
+}
+
+.controls__select-all__count{
+
+	margin: 0 0 0 1rem;
+
+}
+
 dialog{
 
 	border: 0;
@@ -58,6 +167,8 @@ button{
 
 .user-card{
 
+	position: relative;
+
 	width: 100px;
 
 	margin-right: 1rem;
@@ -79,5 +190,15 @@ button{
 	width: 50px;
 
 	border-radius: 25px;
+
+}
+
+.user-card__check{
+
+	position: absolute;
+  
+	top: 5px;
+  
+	left: 5px;
 
 }

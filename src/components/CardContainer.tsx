@@ -10,9 +10,11 @@ interface CardContainerProps {
 
 	rateLimitReached: boolean;
 
+	handleSelectUser: ( e: React.MouseEvent<HTMLInputElement>, userId: number ) => void;
+
 }
 
-export default function CardContainer( { listOfUsersData, rateLimitReset, rateLimitReached }: CardContainerProps ){
+export default function CardContainer( { listOfUsersData, rateLimitReset, rateLimitReached, handleSelectUser }: CardContainerProps ){
 
 	return <div className="card-container">
 
@@ -34,6 +36,7 @@ export default function CardContainer( { listOfUsersData, rateLimitReset, rateLi
 						<UserCard 
 							userData={ userData }
 							key={ `user-card-${ userCardindex }` }
+							handleSelectUser={ handleSelectUser }
 						/> )
 					)
 				: null

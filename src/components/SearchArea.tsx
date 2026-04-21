@@ -7,12 +7,18 @@ interface SearchAreaProps {
 
 const SearchArea: React.FC<SearchAreaProps> = ( { handleChange }) => {
 
-	return <input
-		type="text"
-		placeholder="type something"
-		onChange={ handleChange }
-	/>
+	return <div
+		className="search-area"
+		>
 
+		<input
+			type="text"
+			className="search-area__input"
+			placeholder="type something"
+			onChange={ handleChange }
+		/>
+
+	</div>
 }
 
 export default SearchArea;
