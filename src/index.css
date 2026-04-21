@@ -2,6 +2,7 @@
 	--text: #black;
 	--color-full__grey: #d5d5d5;
 	--color-full__grey-2: #929292;
+	--color-full__blue: #00a1ff;
 	letter-spacing: 0.18px;
 	color: var(--text);
 	background: var(--bg);

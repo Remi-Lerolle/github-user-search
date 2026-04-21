@@ -178,9 +178,11 @@ function UsersView() {
 	}
 
 	const handleRemoveUsers = () => {
-
+		
+		/* No user or no selection => no action */
 		if ( !listOfUsersData || !listOfSelectedUsers.length ){ return; }
 
+		/* Remove every users */
 		if ( listOfSelectedUsers.length === listOfUsersData.length ){
 
 			setListOfUsersData( [] );
@@ -189,6 +191,7 @@ function UsersView() {
 
 		}
 
+		/* Remove selected users */
 		setListOfUsersData( listOfUsersData
 			.reduce(
 
@@ -205,11 +208,59 @@ function UsersView() {
 					},
 
 				[]
+
 			)
 		
 		)
 
+		setListOfSelectedUser( [] );
+	
 	}
+
+	const handleCopyUser = () => {
+
+		/* No user or no selection => no action */
+		if ( !listOfUsersData || !listOfSelectedUsers.length ){ return; }
+
+		/* Copy every users */
+		if ( listOfSelectedUsers.length === listOfUsersData.length ){
+
+			setListOfUsersData( [ ...listOfUsersData, ...listOfUsersData ] );
+
+			setListOfSelectedUser( [] );
+
+		}
+
+		/* Copy selected users */
+		setListOfUsersData( listOfUsersData
+			.reduce(
+
+					( acc, userData, currIndex ) => { 
+					
+						if( listOfSelectedUsers.includes( userData.id ) ){
+
+							acc
+								.splice( currIndex, 0, { ...userData, id: Math.random()  } );
+
+							/* self.crypto.randomUUID() would be a good choice for alpha numeric ids*/
+
+							return acc;
+
+						}
+
+						return acc;
+
+					},
+
+				structuredClone( listOfUsersData )
+
+			)
+
+		);		
+
+		setListOfSelectedUser( [] );
+
+	} 
 
 	return <>
 		
@@ -224,6 +275,7 @@ function UsersView() {
 				countUsers={ listOfUsersData?.length || 0 }
 				handleSelecAlltUsers={ handleSelecAlltUsers }
 				handleRemoveUsers={ handleRemoveUsers }
+				handleCopyUser={ handleCopyUser }
 			/>
 
 			<CardContainer

@@ -13,9 +13,11 @@ interface ControlsProps{
 
 	handleRemoveUsers: () => void;
 	
+	handleCopyUser: () => void;
+	
 }
 
-export default function Controls( { countSelected, countUsers, handleSelecAlltUsers, handleRemoveUsers }: ControlsProps ){
+export default function Controls( { countSelected, countUsers, handleSelecAlltUsers, handleRemoveUsers, handleCopyUser }: ControlsProps ){
 
 	return <div
 		className="controls">
@@ -65,7 +67,8 @@ export default function Controls( { countSelected, countUsers, handleSelecAlltUs
 				>
 
 				<img
-						src={Copy}
+					src={Copy}
+					onClick={ handleCopyUser }
 					/>
 					
 				</div>
