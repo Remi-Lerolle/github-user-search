@@ -13,6 +13,7 @@ export default function UserCard( { userData }: CardProps ){
 
 			<img 
 				alt="user avatar"
+				className="user-card__profile-avatar"
 				src={ userData.avatar_url.toString() }
 			/>
 
@@ -21,6 +22,12 @@ export default function UserCard( { userData }: CardProps ){
 				{ userData.login }
 
 			</p>
+
+			<button>
+
+				Voir le profile
+
+			</button>
 
 		</div>
 	)

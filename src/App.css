@@ -33,3 +33,51 @@ button{
 	cursor: pointer;
 
 }
+
+.card-container{
+
+	display: flex;
+
+	justify-content: center;
+
+	padding: 0rem 2rem;
+
+	flex-direction: row;
+
+	flex-wrap: wrap;
+
+	margin-top: 2rem;
+
+	overflow: scroll;
+
+	bottom: 500px;
+
+	height: 500px;
+
+}
+
+.user-card{
+
+	width: 100px;
+
+	margin-right: 1rem;
+
+	margin-top: 1rem;
+
+	text-align: center;
+
+	background-color: var( --color-full__grey );
+
+	padding: 1rem;
+
+	border-radius: 0.5rem;
+
+}
+
+.user-card__profile-avatar{
+
+	width: 50px;
+
+	border-radius: 25px;
+
+}

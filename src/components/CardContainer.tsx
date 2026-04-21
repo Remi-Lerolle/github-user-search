@@ -48,7 +48,7 @@ export default function CardContainer( { listOfUsersData, rateLimitReset, rateLi
 						message={`Aucun résultat.`}
 						id="no-result"
 					/>
-				:null
+				: null
 
 		}
 
