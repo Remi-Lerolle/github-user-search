@@ -21,6 +21,7 @@ export default function CardContainer( { listOfUsersData, rateLimitReset, rateLi
 			rateLimitReached
 				? <Message 
 						message={`Limite d'appels API atteinte ! Attendre ${ rateLimitReset - Math.round( Date.now() / 1000 ) } secondes.`} 
+						id="api-limit-reached"
 					/>
 				:	null
 
@@ -28,7 +29,7 @@ export default function CardContainer( { listOfUsersData, rateLimitReset, rateLi
 
 		{ 
 	
-			listOfUsersData
+			listOfUsersData && listOfUsersData.length
 				? listOfUsersData.map( ( userData, userCardindex ) => ( 
 						<UserCard 
 							userData={ userData }
@@ -37,6 +38,18 @@ export default function CardContainer( { listOfUsersData, rateLimitReset, rateLi
 					)
 				: null
 		 
+		}
+
+		{/* could merge to a single test with previous */}
+		{ 
+	
+			listOfUsersData && listOfUsersData.length === 0
+				? <Message 
+						message={`Aucun résultat.`}
+						id="no-result"
+					/>
+				:null
+
 		}
 
 	</div>

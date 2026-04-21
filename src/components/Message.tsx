@@ -1,24 +1,48 @@
+import { useEffect } from "react";
+
 interface MessageProps {
 
-	message: string | null;
+	message: string;
+
+	id: string;
 
 }
 
-export default function Message( { message }: MessageProps ){
+export default function Message( { message, id }: MessageProps ){
 
 	const closeDialog = () => {
 
 		document
-			.querySelector( "dialog" )
+			.querySelector( `dialog` )
 			.close()
 
 	}
 
+	const showDialog = () => {
+
+		document
+			.querySelector( "dialog" )
+			.showModal()
+
+	}
+	
+	/* Always display the dialog as a modal (with backdrop) */
+	useEffect( 
+	
+		() => {
+
+			showDialog();
+
+		},
+
+		[], // deps array
+
+	)
 
 	return <>
 
 		<dialog 
-			id="message-dialog"
+			id={ `message-dialog-${ id }` }
 		>
 
 			<p>
@@ -44,13 +68,5 @@ export default function Message( { message }: MessageProps ){
 
 		</dialog>
 
-		{
-
- 			document
-				.getElementsByTagName( "dialog" )
-				[ 0 ]
-				?.showModal()
-
-		}
 	</>
 }
