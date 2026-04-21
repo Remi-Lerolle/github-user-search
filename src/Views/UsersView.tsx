@@ -78,11 +78,11 @@ function UsersView() {
 
 			const result = await response.json();
 
-			console.log( "result", result );
-
 			handleApiHeaders ( response.headers );
 
 			setListOfUsersData( result.items );
+
+			setListOfSelectedUser( [] );
 
 		} catch ( error ){
 
@@ -177,6 +177,40 @@ function UsersView() {
 
 	}
 
+	const handleRemoveUsers = () => {
+
+		if ( !listOfUsersData || !listOfSelectedUsers.length ){ return; }
+
+		if ( listOfSelectedUsers.length === listOfUsersData.length ){
+
+			setListOfUsersData( [] );
+
+			setListOfSelectedUser( [] );
+
+		}
+
+		setListOfUsersData( listOfUsersData
+			.reduce(
+
+					( acc, userData ) => { 
+					
+						if( !listOfSelectedUsers.includes( userData.id ) ){
+
+							return [ ...acc, userData ];
+
+						}
+
+						return acc;
+
+					},
+
+				[]
+			)
+		
+		)
+
+	}
+
 	return <>
 		
 			<Header />
@@ -189,6 +223,7 @@ function UsersView() {
 				countSelected={ listOfSelectedUsers.length }
 				countUsers={ listOfUsersData?.length || 0 }
 				handleSelecAlltUsers={ handleSelecAlltUsers }
+				handleRemoveUsers={ handleRemoveUsers }
 			/>
 
 			<CardContainer

@@ -10,10 +10,12 @@ interface ControlsProps{
 	countUsers: number;
 
 	handleSelecAlltUsers: () => void;
+
+	handleRemoveUsers: () => void;
 	
 }
 
-export default function Controls( { countSelected, countUsers, handleSelecAlltUsers }: ControlsProps ){
+export default function Controls( { countSelected, countUsers, handleSelecAlltUsers, handleRemoveUsers }: ControlsProps ){
 
 	return <div
 		className="controls">
@@ -49,7 +51,7 @@ export default function Controls( { countSelected, countUsers, handleSelecAlltUs
 				<p
 					className="controls__select-all__count" >
 
-					<span>{countSelected}</span><span>{ ` selected element${ countSelected > 0 ? "s" : "" }` }</span> {/* text could be "selected user(s) instead*/}
+					<span>{ countSelected }</span><span>{ ` selected element${ countSelected > 0 ? "s" : "" }` }</span> {/* text could be "selected user(s) instead*/}
 
 				</p>
 
@@ -73,6 +75,7 @@ export default function Controls( { countSelected, countUsers, handleSelecAlltUs
 
 					<img
 						src={Trash}
+						onClick={ handleRemoveUsers }
 					/>
 
 				</div>
