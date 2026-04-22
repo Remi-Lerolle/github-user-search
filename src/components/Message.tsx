@@ -6,17 +6,25 @@ interface MessageProps {
 
 export default function Message( { children }: MessageProps ){
 
+	const id = Math.random().toString()
+
 	const closeDialog = () => {
 
-		document
-			.querySelector( "dialog" )
-			.close()
+		const dialog = document
+			.getElementById( id ) as HTMLDialogElement;
+
+		if ( dialog ){
+
+			dialog.close();
+
+		}
 
 	}
 
 	return <>
 
 		<dialog 
+			id={id}
 			open
 		>
 				

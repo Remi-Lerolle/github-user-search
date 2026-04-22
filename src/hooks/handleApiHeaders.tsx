@@ -14,23 +14,22 @@ interface apiHeadersHandlerReturn{
 
 export const apiHeadersHandler = (): apiHeadersHandlerReturn => {
 
+	const defaultRateLimit = new RateLimit( 0, 0, null, null );
+
 	/*
-			If a rateLimitReset has been saved in the browser,
-			uses it
-			otherwise it will be set at API response
+			If a rateLimitReset has been saved in the browser localStorage,
+			uses it.
 	*/
 	const rateLimitRef = useRef< RateLimit | null > (
 			localStorage.getItem( "rateLimitReset" )
-			? new RateLimit( 
-					0,
-					0,
-					Number( localStorage.getItem( "rateLimitReset" ) ),
-					null
-				)
-			: null
+				? new RateLimit( 
+						0,
+						0,
+						Number( localStorage.getItem( "rateLimitReset" ) ),
+						null
+					)
+				: { ...defaultRateLimit }
 		)
-
-	const getRateLimitRef = () => rateLimitRef.current;
 
 	const getRateLimitRefRemaining = () => rateLimitRef.current?.remaining;
 	
@@ -41,7 +40,7 @@ export const apiHeadersHandler = (): apiHeadersHandlerReturn => {
 		/* 
 			Save x-rate-limit in local storage.
 			Because if the user reach the limit and reloads the page,
-			the browser lose it
+			the browser loses it
 		*/
 		localStorage.setItem( "rateLimitReset",  headers.get( "x-ratelimit-reset" ) );
 
@@ -63,7 +62,7 @@ export const apiHeadersHandler = (): apiHeadersHandlerReturn => {
 	const limitIsReached = () => {
 
 		/* API has not yet been requested, means no limit */
-		if ( !getRateLimitRef() ){
+		if ( !getRateLimitRefReset() ){
 			
 			return false; 
 
