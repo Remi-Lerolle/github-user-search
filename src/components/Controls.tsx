@@ -9,15 +9,15 @@ interface ControlsProps{
 
 	countUsers: number;
 
-	handleSelecAlltUsers: () => void;
+	handleSelectAllUsers: () => void;
 
 	handleRemoveUsers: () => void;
-	
+
 	handleCopyUser: () => void;
-	
+
 }
 
-export default function Controls( { countSelected, countUsers, handleSelecAlltUsers, handleRemoveUsers, handleCopyUser }: ControlsProps ){
+export default function Controls( { countSelected, countUsers, handleSelectAllUsers, handleRemoveUsers, handleCopyUser }: ControlsProps ){
 
 	return <div
 		className="controls">
@@ -27,7 +27,7 @@ export default function Controls( { countSelected, countUsers, handleSelecAlltUs
 			
 				<div
 					className="controls__select-all__box"
-					onClick={ handleSelecAlltUsers }
+					onClick={ handleSelectAllUsers }
 				>
 
 					{
@@ -68,7 +68,7 @@ export default function Controls( { countSelected, countUsers, handleSelecAlltUs
 				>
 
 				<img
-					src={Copy}
+					src={ Copy }
 					onClick={ handleCopyUser }
 					/>
 					
@@ -78,7 +78,7 @@ export default function Controls( { countSelected, countUsers, handleSelecAlltUs
 					className="controls__actions__delete" >
 
 					<img
-						src={Trash}
+						src={ Trash }
 						onClick={ handleRemoveUsers }
 					/>
 

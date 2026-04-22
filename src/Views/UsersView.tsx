@@ -5,20 +5,21 @@ import SearchArea from '../components/SearchArea.tsx';
 import Controls from '../components/Controls.tsx';
 import CardContainer from '../components/CardContainer.tsx';
 
-import type { UserDataType } from '../Types/userDataType.tsx';
 import type { fetchUsersProps } from '../Types/fetchUserProps.tsx';
 
 import { useRateLimit } from '../hooks/useRateLimit.tsx'
+import { useListOfUsersData } from '../hooks/useListOfUsersData.tsx';
+import { useListOfSelectedUsers } from '../hooks/useListOfSelectedUsers.tsx';
 
 function UsersView() {
+
+	const { listOfUsersData, setListOfUsersData } = useListOfUsersData();
+
+	const { listOfSelectedUsers, setListOfSelectedUser, handleSelectUser, handleSelectAllUsers, handleRemoveUsers, handleCopyUser } = useListOfSelectedUsers();
 
 	const [ searchTerm, setSearchTerm ] = useState< String > ( "" );
 
 	const { getRateLimitRefReset, handleApiHeaders, limitIsReached } = useRateLimit();
-
-	const [ listOfUsersData, setListOfUsersData ] = useState< UserDataType[] | null > ( null );
-
-	const [ listOfSelectedUsers, setListOfSelectedUser ] = useState< number[] > ([]);
 
 	/* If the user types faster than 500ms the fetchUser function is not triggered */
 	useEffect( () => {
@@ -26,7 +27,7 @@ function UsersView() {
 		//Set a timer to delay the API call
 		const delayBounceId = setTimeout(
 			
-			() => { if ( typeof searchTerm === "string" ){ fetchUsers( { inputValue : searchTerm, pageNumber: undefined} ); }},
+			() => { if ( typeof searchTerm === "string" ){ fetchUsers( { inputValue : searchTerm, pageNumber: undefined } ); }},
 
 			500
 
@@ -83,144 +84,6 @@ function UsersView() {
 
 	}
 
-	const handleSelectUser = ( e: React.ChangeEvent<HTMLInputElement>, userId: number ): void => {
-
-		const newListOfSelectedUser = [ ...listOfSelectedUsers ];
-
-		if ( e.currentTarget.checked && !newListOfSelectedUser.includes( userId ) ){
-
-			newListOfSelectedUser.push( userId );
-
-		} else {
-
-			const userIndex = newListOfSelectedUser.indexOf( userId );
-
-			if ( userIndex > -1 ){
-
-				newListOfSelectedUser.splice( userIndex, 1 );
-
-			}
-
-		}
-
-		setListOfSelectedUser( newListOfSelectedUser );
-
-	}
-
-	const handleSelecAlltUsers = (): void => {
-
-		if ( listOfUsersData && !listOfSelectedUsers.length ) {
-
-				const newListOfSelectedUser = listOfUsersData
-					.map( user => user.id );
-
-			setListOfSelectedUser( newListOfSelectedUser );
-
-
-		} else {
-
-			setListOfSelectedUser( [] );
-
-		}
-
-	}
-
-	const handleRemoveUsers = () => {
-		
-		/* No user or no selection => no action */
-		if ( !listOfUsersData || !listOfSelectedUsers.length ){ return; }
-
-		/* Remove every users */
-		if ( listOfSelectedUsers.length === listOfUsersData.length ){
-
-			setListOfUsersData( [] );
-
-			setListOfSelectedUser( [] );
-
-		}
-
-		/* Remove selected users */
-		setListOfUsersData( listOfUsersData
-			.reduce(
-
-					( acc, userData ) => {
-					
-						if( !listOfSelectedUsers.includes( userData.id ) ){
-
-							return [ ...acc, userData ];
-
-						}
-
-						return acc;
-
-					},
-
-				[]
-
-			)
-		
-		)
-
-		setListOfSelectedUser( [] );
-	
-	}
-
-	const handleCopyUser = () => {
-
-		/* No user or no selection => no action */
-		if ( !listOfUsersData || !listOfSelectedUsers.length ){ return; }
-
-		/* Copy every users */
-		if ( listOfSelectedUsers.length === listOfUsersData.length ){
-
-			setListOfUsersData( [ ...listOfUsersData, ...listOfUsersData ] );
-
-			setListOfSelectedUser( [] );
-
-		}
-
-		/* Copy selected users */
-		setListOfUsersData( listOfUsersData
-			.reduce(
-
-					( acc, userData ) => {
-					
-						if( listOfSelectedUsers.includes( userData.id ) ){
-
-							const currentInAcc = acc.find( userInAcc => userInAcc.id === userData.id );
-
-							/* indexOfCurrentInAcc allows to have the the clone aside of genuine */
-							const indexOfCurrentInAcc = acc.indexOf( currentInAcc );
-
-														/* Define a new id for the cloned user to avoid conflict on latter selection */
-							/* TO DO: check the new id is not alreay assigned  */
-							/* self.crypto.randomUUID() would be a better choice for alpha numeric ids */
-							acc
-								.splice( 
-									indexOfCurrentInAcc + 1,
-									0, 
-									{ ...userData, id: Math.floor(Math.random() * 100000)  }
-								);
-
-
-							return acc;
-
-						}
-
-						return acc;
-
-					},
-
-				structuredClone( listOfUsersData )
-
-			)
-
-		);
-
-		setListOfSelectedUser( [] );
-
-	}
-
 	return <>
 		
 			<Header />
@@ -232,9 +95,9 @@ function UsersView() {
 			<Controls 
 				countSelected={ listOfSelectedUsers.length }
 				countUsers={ listOfUsersData?.length || 0 }
-				handleSelecAlltUsers={ handleSelecAlltUsers }
-				handleRemoveUsers={ handleRemoveUsers }
-				handleCopyUser={ handleCopyUser }
+				handleSelectAllUsers={ () => handleSelectAllUsers( listOfUsersData ) }
+				handleRemoveUsers={ () => handleRemoveUsers( listOfUsersData, listOfSelectedUsers, setListOfUsersData ) }
+				handleCopyUser={ () => handleCopyUser( listOfUsersData, listOfSelectedUsers, setListOfUsersData ) }
 			/>
 
 			<CardContainer
@@ -244,6 +107,8 @@ function UsersView() {
 				handleSelectUser={ handleSelectUser }
 				listOfSelectedUsers={ listOfSelectedUsers }
 			/>
+
+			{ /* TO DO: PAGER */}
 
 		</>
 
