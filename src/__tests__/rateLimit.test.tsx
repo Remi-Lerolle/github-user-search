@@ -1,7 +1,7 @@
 import { renderHook, act } from "@testing-library/react"
 import { describe, test, expect } from "vitest";
 
-import { apiHeadersHandler } from "../hooks/handleApiHeaders"
+import { useRateLimit } from "../hooks/useRateLimit"
 
 describe (
 
@@ -15,7 +15,7 @@ describe (
 
 			() => {
 
-				const { result } = renderHook( () => apiHeadersHandler() );
+				const { result } = renderHook( () => useRateLimit() );
 
 				expect( result.current.getRateLimitRefReset() ).toBe( null );
 
@@ -41,7 +41,7 @@ describe (
 				testHeader.append( "x-ratelimit-reset", datePlus1Min.toString() );
 				testHeader.append( "x-ratelimit-used", "0" );
 
-				const { result } = renderHook( () => apiHeadersHandler() );
+				const { result } = renderHook( () => useRateLimit() );
 
 				act(
 

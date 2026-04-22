@@ -2,7 +2,7 @@ import { useRef } from 'react';
 
 import { RateLimit } from '../classes/RateLimit';
 
-interface apiHeadersHandlerReturn{
+interface useRateLimitReturn{
 	
 	getRateLimitRefReset: () => number;
 
@@ -12,7 +12,7 @@ interface apiHeadersHandlerReturn{
 
 }
 
-export const apiHeadersHandler = (): apiHeadersHandlerReturn => {
+export const useRateLimit = (): useRateLimitReturn => {
 
 	const defaultRateLimit = new RateLimit( 0, 0, null, null );
 

@@ -8,13 +8,13 @@ import CardContainer from '../components/CardContainer.tsx';
 import type { UserDataType } from '../Types/userDataType.tsx';
 import type { fetchUsersProps } from '../Types/fetchUserProps.tsx';
 
-import { apiHeadersHandler } from '../hooks/handleApiHeaders.tsx'
+import { useRateLimit } from '../hooks/useRateLimit.tsx'
 
 function UsersView() {
 
 	const [ searchTerm, setSearchTerm ] = useState< String > ( "" );
 
-	const { getRateLimitRefReset, handleApiHeaders, limitIsReached } = apiHeadersHandler();
+	const { getRateLimitRefReset, handleApiHeaders, limitIsReached } = useRateLimit();
 
 	const [ listOfUsersData, setListOfUsersData ] = useState< UserDataType[] | null > ( null );
 
