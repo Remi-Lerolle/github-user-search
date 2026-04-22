@@ -1,5 +1,4 @@
-
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Header from '../components/Header.tsx';
 import SearchArea from '../components/SearchArea.tsx';
@@ -9,27 +8,13 @@ import CardContainer from '../components/CardContainer.tsx';
 import type { UserDataType } from '../Types/userDataType.tsx';
 import type { fetchUsersProps } from '../Types/fetchUserProps.tsx';
 
-import { RateLimit } from '../classes/RateLimit.tsx'
+import { apiHeadersHandler } from '../hooks/handleApiHeaders.tsx'
 
 function UsersView() {
 
 	const [ searchTerm, setSearchTerm ] = useState< String > ( "" );
 
-	/* 
-			If a rateLimitReset has been saved in the browser,
-			uses it
-			otherwise it will be set at API response
- 	*/
-	const rateLimitRef = useRef< RateLimit | null > (
-		 localStorage.getItem( "rateLimitReset" )
-			? new RateLimit( 
-					0, 
-					0, 
-					Number( localStorage.getItem( "rateLimitReset" ) ),
-					null
-				)
-			: null
-		)
+	const { getRateLimitRefReset, handleApiHeaders, limitIsReached } = apiHeadersHandler();
 
 	const [ listOfUsersData, setListOfUsersData ] = useState< UserDataType[] | null > ( null );
 
@@ -53,7 +38,7 @@ function UsersView() {
 	},
 
 	[ searchTerm ] // deps array
-	
+
 	)
 
 	async function fetchUsers( { inputValue, pageNumber }: fetchUsersProps ){
@@ -86,46 +71,9 @@ function UsersView() {
 
 		} catch ( error ){
 
-			console.error( error ); 
+			console.error( error );
 
 		}
-
-	}
-
-	const handleApiHeaders = ( headers: Headers ): void =>{
-
-		/* 
-			Save x-rate-limit in local storage.
-			Because if the user reach the limit and reloads the page,
-			the browser lose it
-		*/
-		localStorage.setItem( "rateLimitReset",  headers.get( "x-ratelimit-reset" ) );
-
-		/* Updates the rate limit ref */ 
-		rateLimitRef.current = new RateLimit(
-
-				Number ( headers.get( "x-rate-limit" ) ),
-
-				Number ( headers.get( "x-ratelimit-remaining" ) ),
-
-				Number ( headers.get( "x-ratelimit-reset" ) ),
-
-				Number ( headers.get( "x-ratelimit-used" ) )
-
-		);
-
-	}
-
-	const limitIsReached = () => {
-
-		/* API has not yet been requested */
-		if ( !rateLimitRef.current ){
-			
-			return false; 
-
-		}
-
-		return rateLimitRef.current.remaining === 0 && ( Date.now() / 1000 ) < rateLimitRef.current.reset;
 
 	}
 
@@ -155,7 +103,7 @@ function UsersView() {
 
 		}
 
-		setListOfSelectedUser( newListOfSelectedUser ); 
+		setListOfSelectedUser( newListOfSelectedUser );
 
 	}
 
@@ -166,7 +114,7 @@ function UsersView() {
 				const newListOfSelectedUser = listOfUsersData
 					.map( user => user.id );
 
-			setListOfSelectedUser( newListOfSelectedUser ); 
+			setListOfSelectedUser( newListOfSelectedUser );
 
 
 		} else {
@@ -195,7 +143,7 @@ function UsersView() {
 		setListOfUsersData( listOfUsersData
 			.reduce(
 
-					( acc, userData ) => { 
+					( acc, userData ) => {
 					
 						if( !listOfSelectedUsers.includes( userData.id ) ){
 
@@ -235,11 +183,11 @@ function UsersView() {
 		setListOfUsersData( listOfUsersData
 			.reduce(
 
-					( acc, userData ) => { 
+					( acc, userData ) => {
 					
 						if( listOfSelectedUsers.includes( userData.id ) ){
 
-							const currentInAcc = acc.find( userInAcc => userInAcc.id === userData.id  );
+							const currentInAcc = acc.find( userInAcc => userInAcc.id === userData.id );
 
 							/* indexOfCurrentInAcc allows to have the the clone aside of genuine */
 							const indexOfCurrentInAcc = acc.indexOf( currentInAcc );
@@ -251,7 +199,7 @@ function UsersView() {
 								.splice( 
 									indexOfCurrentInAcc + 1,
 									0, 
-									{ ...userData, id: Math.floor(Math.random() * 100000)  } 
+									{ ...userData, id: Math.floor(Math.random() * 100000)  }
 								);
 
 
@@ -267,18 +215,18 @@ function UsersView() {
 
 			)
 
-		);		
+		);
 
 		setListOfSelectedUser( [] );
 
-	} 
+	}
 
 	return <>
 		
 			<Header />
 
 			<SearchArea
-				handleChange={ handleChange } 
+				handleChange={ handleChange }
 				/>
 
 			<Controls 
@@ -291,7 +239,7 @@ function UsersView() {
 
 			<CardContainer
 				listOfUsersData={ listOfUsersData }				
-				rateLimitReset={ rateLimitRef.current?.reset || null }
+				rateLimitReset={ getRateLimitRefReset() || null }
 				rateLimitReached={ limitIsReached() || false }
 				handleSelectUser={ handleSelectUser }
 				listOfSelectedUsers={ listOfSelectedUsers }
