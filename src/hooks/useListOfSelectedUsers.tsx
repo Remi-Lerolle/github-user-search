@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import type { UserDataType } from '../Types/userDataType';
 
-
 interface useListOfSelectedUsersReturn {
 
 	listOfSelectedUsers: number[];
