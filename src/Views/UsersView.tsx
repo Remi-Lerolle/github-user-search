@@ -11,6 +11,7 @@ import { useRateLimit } from '../hooks/useRateLimit.tsx'
 import { useListOfUsersData } from '../hooks/useListOfUsersData.tsx';
 import { useListOfSelectedUsers } from '../hooks/useListOfSelectedUsers.tsx';
 import { useSearchTerm } from '../hooks/useSearchTerm.tsx';
+import type { UserDataType } from '../Types/userDataType.tsx';
 
 function UsersView() {
 
@@ -23,7 +24,7 @@ function UsersView() {
 	const { getRateLimitRefReset, handleApiHeaders, limitIsReached } = useRateLimit();
 
 
-	const fetchUsersCallBack = ( responseHeaders, resultItems ) => {
+	const fetchUsersCallBack = ( responseHeaders: Headers, resultItems: UserDataType[] ) => {
 
 			handleApiHeaders ( responseHeaders );
 

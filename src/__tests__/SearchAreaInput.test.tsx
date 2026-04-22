@@ -1,4 +1,4 @@
-import { describe, test, expect, vi } from "vitest";
+import { describe, test, expect } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
 
 import SearchArea from "../components/SearchArea";
@@ -38,8 +38,6 @@ describe(
 			"Calls onChange when changed",
 
 			() => {
-
-				const handleChange = vi.fn;
 
 				render(
 

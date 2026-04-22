@@ -50,7 +50,7 @@ export default function CardContainer( { listOfUsersData, rateLimitReset, rateLi
 
 			rateLimitReached
 				? <Message>
-						<p>{`Limite d'appels API atteinte ! Attendre ${ rateLimitReset - Math.round( Date.now() / 1000 ) } secondes.`}</p>
+						<p>{`Limite d'appels API atteinte ! Attendre ${ rateLimitReset ? rateLimitReset - Math.round( Date.now() / 1000 ) : "" } secondes.`}</p>
 					</Message>
 				:	null
 

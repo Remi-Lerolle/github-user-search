@@ -1,3 +1,5 @@
+import type { UserDataType } from "./userDataType";
+
 export interface fetchUsersProps{
 
 	limitIsReached: boolean;
@@ -6,6 +8,6 @@ export interface fetchUsersProps{
 
 	pageNumber: number | undefined;
 
-	fetchUsersCallBack: ( responseHeaders, resultItems ) => void;
+	fetchUsersCallBack: ( responseHeaders: Headers, resultItems: UserDataType[] ) => void;
 
 }

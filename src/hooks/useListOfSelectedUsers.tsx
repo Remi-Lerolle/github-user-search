@@ -13,7 +13,7 @@ interface useListOfSelectedUsersReturn {
 
 	handleRemoveUsers: ( listOfUsersData: UserDataType[], listOfSelectedUsers: number[], setListOfUsersData: ( listOfUsersData: UserDataType[] ) => void ) => void;
 
-	handleCopyUser: ( listOfUsersData: UserDataType[], listOfSelectedUsers: number[], etListOfUsersData: ( listOfUsersData: UserDataType[] ) => void ) => void;
+	handleCopyUser: ( listOfUsersData: UserDataType[], listOfSelectedUsers: number[], setListOfUsersData: ( listOfUsersData: UserDataType[] ) => void ) => void;
 
 }
 
@@ -64,7 +64,7 @@ export const useListOfSelectedUsers = (): useListOfSelectedUsersReturn => {
 
 	}
 
-		const handleRemoveUsers = ( listOfUsersData, listOfSelectedUsers, setListOfUsersData ) => {
+	const handleRemoveUsers = ( listOfUsersData: UserDataType[], listOfSelectedUsers: number[], setListOfUsersData: ( listOfUsersData: UserDataType[] ) => void ) => {
 		
 		/* No user or no selection => no action */
 		if ( !listOfUsersData || !listOfSelectedUsers.length ){ return; }
@@ -78,9 +78,7 @@ export const useListOfSelectedUsers = (): useListOfSelectedUsersReturn => {
 
 		}
 
-		/* Remove selected users */
-		setListOfUsersData( listOfUsersData
-			.reduce(
+		const newListOfUserData: UserDataType[] = listOfUsersData.reduce(
 
 					( acc, userData ) => {
 					
@@ -96,9 +94,10 @@ export const useListOfSelectedUsers = (): useListOfSelectedUsersReturn => {
 
 				[]
 
-			)
-		
 		)
+
+		/* Remove selected users */
+		setListOfUsersData( newListOfUserData	);
 
 		setListOfSelectedUser( [] );
 	
