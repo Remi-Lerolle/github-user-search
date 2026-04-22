@@ -1,5 +1,5 @@
 import { describe, test, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 
 import SearchArea from "../components/SearchArea";
 
@@ -16,9 +16,12 @@ describe(
 			() => {
 
 				render( 
+
 					<SearchArea 
-						handleChange={ ( e: React.ChangeEvent<HTMLInputElement> ) => { console.log( "clicked!" ); console.log( e.currentTarget ) } }
-					/> )
+						handleChange={ ( e: React.ChangeEvent<HTMLInputElement> ) => { console.log( "changed!" ); console.log( e.currentTarget ) } }
+					/> 
+				
+				)
 
 				expect(
 
@@ -28,6 +31,27 @@ describe(
 
 			}
 
+		),
+
+		test( 
+
+			"Calls onChange when changed",
+
+			() => {
+
+				const handleChange = vi.fn;
+
+				render(
+
+					<SearchArea 
+						handleChange={ ( e: React.ChangeEvent<HTMLInputElement> ) => { console.log( "changed!" ); console.log( e.currentTarget ) } }
+					/> 
+				
+				)
+
+				fireEvent
+					.click( screen.getByPlaceholderText( "type something" ) )
+			}
 		)
 
 	}
