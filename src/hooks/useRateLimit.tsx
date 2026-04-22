@@ -14,7 +14,7 @@ interface useRateLimitReturn{
 
 export const useRateLimit = (): useRateLimitReturn => {
 
-	const defaultRateLimit = new RateLimit( 0, 0, null, null );
+	const defaultRateLimit = new RateLimit( 0, 0, 0, 0 );
 
 	/*
 			If a rateLimitReset has been saved in the browser localStorage,
@@ -25,15 +25,15 @@ export const useRateLimit = (): useRateLimitReturn => {
 				? new RateLimit( 
 						0,
 						0,
-						Number( localStorage.getItem( "rateLimitReset" ) ),
-						null
+						Number( localStorage.getItem( "rateLimitReset" ) ) || 0,
+						0
 					)
 				: { ...defaultRateLimit }
 		)
 
-	const getRateLimitRefRemaining = () => rateLimitRef.current?.remaining;
+	const getRateLimitRefRemaining = () => rateLimitRef.current?.remaining || 0 ;
 	
-	const getRateLimitRefReset = () => rateLimitRef.current?.reset;
+	const getRateLimitRefReset = () => rateLimitRef.current?.reset || 0;
 
 	const handleApiHeaders = ( headers: Headers ): void => {
 
@@ -42,18 +42,18 @@ export const useRateLimit = (): useRateLimitReturn => {
 			Because if the user reach the limit and reloads the page,
 			the browser loses it
 		*/
-		localStorage.setItem( "rateLimitReset",  headers.get( "x-ratelimit-reset" ) );
+		localStorage.setItem( "rateLimitReset",  headers.get( "x-ratelimit-reset" ) || "0" );
 
 		/* Updates the rate limit ref */ 
 		rateLimitRef.current = new RateLimit(
 
-				Number ( headers.get( "x-rate-limit" ) ),
+				Number ( headers.get( "x-rate-limit" ) || 0 ),
 
-				Number ( headers.get( "x-ratelimit-remaining" ) ),
+				Number ( headers.get( "x-ratelimit-remaining" ) || 0 ),
 
-				Number ( headers.get( "x-ratelimit-reset" ) ),
+				Number ( headers.get( "x-ratelimit-reset" ) || 0 ),
 
-				Number ( headers.get( "x-ratelimit-used" ) )
+				Number ( headers.get( "x-ratelimit-used" ) || 0 )
 
 		);
 

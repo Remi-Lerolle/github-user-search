@@ -41,3 +41,47 @@ export interface UserDataType{
   "score": number
 
 }
+
+export const defaultUserData: UserDataType = {
+
+  "login": "",
+
+  "id": 0,
+
+  "node_id": "",
+
+  "avatar_url": new URL('https://github.com/R:'),
+
+  "gravatar_id": "",
+
+  "url": new URL('https://github.com/R'),
+
+  "html_url": new URL('https://github.com/R'),
+
+  "followers_url": new URL('https://github.com/R'),
+
+  "following_url": new URL('https://github.com/R'),
+
+  "gists_url": new URL('https://github.com/R'),
+
+  "starred_url": new URL('https://github.com/R'),
+
+  "subscriptions_url": new URL('https://github.com/R'),
+
+  "organizations_url": new URL('https://github.com/R'),
+
+  "repos_url": new URL('https://github.com/R'),
+
+  "events_url": new URL('https://github.com/R'),
+
+  "received_events_url": new URL('https://github.com/R'),
+
+  "type": "",
+
+  "user_view_type": "",
+
+  "site_admin": false,
+
+  "score": 0
+
+}

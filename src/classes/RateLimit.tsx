@@ -7,13 +7,13 @@
 
 export class RateLimit {
 
-	limit: number | null = null ;
+	limit: number;
 	
-	remaining: number | null = null;
+	remaining: number;
 
-	reset: number | null = null;
+	reset: number;
 
-	used: number  | null = null;
+	used: number;
 
 	constructor(
 

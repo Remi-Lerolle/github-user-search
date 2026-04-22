@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import type { UserDataType } from '../Types/userDataType.tsx';
+import { defaultUserData } from '../Types/userDataType.tsx';
 
 interface useListOfUsersDataReturn{
 
@@ -10,9 +11,9 @@ interface useListOfUsersDataReturn{
 
 }
 
-export const useListOfUsersData = ():useListOfUsersDataReturn => {
+export const useListOfUsersData = (): useListOfUsersDataReturn => {
 
-	const [ listOfUsersData, setListOfUsersData ] = useState< UserDataType[] | null > ( null );
+	const [ listOfUsersData, setListOfUsersData ] = useState< UserDataType[] > ( [ { ...defaultUserData } ] );
 
 	return { listOfUsersData, setListOfUsersData }
 

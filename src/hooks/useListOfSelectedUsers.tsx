@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import type { UserDataType } from '../Types/userDataType';
+import { defaultUserData } from '../Types/userDataType';
 
 interface useListOfSelectedUsersReturn {
 
@@ -78,9 +79,9 @@ export const useListOfSelectedUsers = (): useListOfSelectedUsersReturn => {
 
 		}
 
-		const newListOfUserData: UserDataType[] = listOfUsersData.reduce(
+		const newListOfUserData = listOfUsersData.reduce<UserDataType[]>(
 
-					( acc, userData ) => {
+					( acc: UserDataType[], userData: UserDataType ) => {
 					
 						if( !listOfSelectedUsers.includes( userData.id ) ){
 
@@ -94,16 +95,16 @@ export const useListOfSelectedUsers = (): useListOfSelectedUsersReturn => {
 
 				[]
 
-		)
+		);
 
 		/* Remove selected users */
-		setListOfUsersData( newListOfUserData	);
+		setListOfUsersData( newListOfUserData || [ {...defaultUserData} ]	);
 
 		setListOfSelectedUser( [] );
 	
 	}
 
-	const handleCopyUser = ( listOfUsersData, listOfSelectedUsers, setListOfUsersData ) => {
+	const handleCopyUser = ( listOfUsersData: UserDataType[], listOfSelectedUsers: number[], setListOfUsersData: ( listOfUsersData: UserDataType[] ) => void ) => {
 
 		/* No user or no selection => no action */
 		if ( !listOfUsersData || !listOfSelectedUsers.length ){ return; }
@@ -119,16 +120,16 @@ export const useListOfSelectedUsers = (): useListOfSelectedUsersReturn => {
 
 		/* Copy selected users */
 		setListOfUsersData( listOfUsersData
-			.reduce(
+			.reduce<UserDataType[]>(
 
-					( acc, userData ) => {
+					( acc: UserDataType[], userData: UserDataType ) => {
 					
 						if( listOfSelectedUsers.includes( userData.id ) ){
 
 							const currentInAcc = acc.find( userInAcc => userInAcc.id === userData.id );
 
 							/* indexOfCurrentInAcc allows to have the the clone aside of genuine */
-							const indexOfCurrentInAcc = acc.indexOf( currentInAcc );
+							const indexOfCurrentInAcc: number = currentInAcc ? acc.indexOf( currentInAcc ) : 0 ;
 
 														/* Define a new id for the cloned user to avoid conflict on latter selection */
 							/* TO DO: check the new id is not alreay assigned  */
@@ -151,7 +152,7 @@ export const useListOfSelectedUsers = (): useListOfSelectedUsersReturn => {
 
 				structuredClone( listOfUsersData )
 
-			)
+			) || [ {...defaultUserData} ]
 
 		);
 
