@@ -39,9 +39,7 @@ export default function CardContainer( { listOfUsersData, rateLimitReset, rateLi
 		{ 
 	
 			listOfUsersData && listOfUsersData.length === 0
-				? <Message>
-						<p>Aucun résultat.</p>
-					</Message>
+				? <p>Aucun résultat.</p>
 				: null
 
 		}
